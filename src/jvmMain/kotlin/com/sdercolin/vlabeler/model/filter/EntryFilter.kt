@@ -81,9 +81,17 @@ data class EntryFilter(
     @Transient
     private val args = parse()
 
+    fun argsAnyPhCnt(): Int {
+        return args.any?.split(" ")?.size ?: 0
+    }
+
+    fun argsAny(): String? {
+        return args.any
+    }
+
     fun matches(entry: Entry): Boolean {
         args.any?.let {
-            if (!entry.name.contains(it) &&
+            if (entry.name != it &&
                 !entry.sampleNameWithoutExtension.contains(it) &&
                 !entry.notes.tag.contains(it)
             ) {

@@ -88,7 +88,25 @@ class EntryListState(
         jumpToEntry(index)
     }
 
-    override fun calculateResult(): List<IndexedValue<Entry>> = entries.filter { filterState.filter.matches(it.value) }
+    override fun calculateResult(): List<IndexedValue<Entry>> =
+        if (filterState.filter.argsAnyPhCnt() > 1)
+            mutableListOf<IndexedValue<Entry>>().apply {
+                var i = 0
+                while (i < entries.size) {
+                    var windowSize = filterState.filter.argsAnyPhCnt()
+                    if (windowSize + i > entries.size) {
+                        windowSize = entries.size - i
+                    }
+
+                    val window = entries.subList(i, i + windowSize).map { entry -> entry.value.name }
+                    if (filterState.filter.argsAny()!!.split(" ").joinToString() == window.joinToString()) {
+                        this.add(entries[i])
+                    }
+
+                    i += 1
+                }
+            }
+        else entries.filter { filterState.filter.matches(it.value) }
 
     override fun updateProject(project: Project) {
         entries = project.currentModule.entries.withIndex().toList()

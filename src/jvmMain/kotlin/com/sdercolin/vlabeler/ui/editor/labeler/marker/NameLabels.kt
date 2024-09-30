@@ -191,7 +191,7 @@ private fun NameLabel(
             .combinedClickable(
                 enabled = clickable,
                 onClick = { requestRename(index) },
-                onLongClick = { jumpToEntry(index) },
+                onDoubleClick = { jumpToEntry(index) },
             )
             .onPointerEvent(eventType = PointerEventType.Enter) {
                 onHovered(index, true)
