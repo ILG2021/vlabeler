@@ -191,7 +191,9 @@ private fun NameLabel(
             .combinedClickable(
                 enabled = clickable,
                 onClick = { requestRename(index) },
-                onDoubleClick = { jumpToEntry(index) },
+                // todo 后续做成开关
+//                onDoubleClick = { jumpToEntry(index) },
+                onLongClick = { jumpToEntry(index) },
             )
             .onPointerEvent(eventType = PointerEventType.Enter) {
                 onHovered(index, true)
